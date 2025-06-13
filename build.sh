@@ -10,17 +10,17 @@ start_time=$(date +%s)
 rm -rf out
 
 # Основной каталог
-MAINPATH=/home/timisong # измените, если необходимо
+MAINPATH=/workspaces # измените, если необходимо
 
 # Каталог ядра
-KERNEL_DIR=$MAINPATH/kernel
-KERNEL_PATH=$KERNEL_DIR/kernel_xiaomi_sm8250
+KERNEL_DIR=$MAINPATH
+KERNEL_PATH=$KERNEL_DIR/kernel_xiaomi_sm8250-mt
 
 git log $LAST..HEAD > ../changelog.txt
 BRANCH=$(git branch --show-current)
 
 # Каталоги компиляторов
-CLANG_DIR=$KERNEL_DIR/clang21
+CLANG_DIR=/lib/llvm-21
 ANDROID_PREBUILTS_GCC_ARM_DIR=$KERNEL_DIR/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9
 ANDROID_PREBUILTS_GCC_AARCH64_DIR=$KERNEL_DIR/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9
 
@@ -51,7 +51,6 @@ check_and_wget() {
 }
 
 # Клонирование инструментов компиляции, если они не существуют
-check_and_wget $CLANG_DIR https://github.com/ZyCromerZ/Clang/releases/download/21.0.0git-20250322-release/Clang-21.0.0git-20250322.tar.gz
 check_and_clone $ANDROID_PREBUILTS_GCC_ARM_DIR https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9
 check_and_clone $ANDROID_PREBUILTS_GCC_AARCH64_DIR https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9
 
@@ -94,8 +93,8 @@ export DTBPATH="$MAGIC_TIME_DIR/dtb"
 export DTBOPATH="$MAGIC_TIME_DIR/dtbo.img"
 export CROSS_COMPILE="aarch64-linux-gnu-"
 export CROSS_COMPILE_COMPAT="arm-linux-gnueabi-"
-export KBUILD_BUILD_USER="TIMISONG"
-export KBUILD_BUILD_HOST="timisong-dev"
+export KBUILD_BUILD_USER="olzhas0986"
+export KBUILD_BUILD_HOST="dev"
 
 # Запись времени сборки
 MAGIC_BUILD_DATE=$(date '+%Y-%m-%d_%H-%M-%S')
@@ -105,7 +104,7 @@ output_dir=out
 
 # Конфигурация ядра
 make O="$output_dir" \
-            ${DEVICE}_defconfig \
+            munch_defconfig \
             vendor/xiaomi/sm8250-common.config
 
     # Компиляция ядра
@@ -174,7 +173,7 @@ else
     -F caption="Latest changes" \
     -F message_thread_id="38153"
 
-    rm -rf MagicTime-$DEVICE-$MAGIC_BUILD_DATE.zip
+    rm -rf MaghhhicTime-$DEVICE-$MAGIC_BUILD_DATE.zip
 
     BUILD=$((BUILD + 1))
 
